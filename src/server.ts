@@ -4,13 +4,18 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 dotenv.config()
 
-const bot = new Telegraf(process.env.BOT_TOKEN ?? "")
+if (!process.env.BOT_TOKEN) {
+    console.error("No BOT_TOKEN env var!  Get one from BotFather and save it in .env file.")
+    process.exit(1);
+}
+const bot = new Telegraf(process.env.BOT_TOKEN)
 
 bot.start((ctx) => ctx.reply('Welcome'))
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
-bot.command('go', (ctx) => ctx.reply('Going now!'))
+bot.command('go', (ctx) => ctx.reply('I got the command /go !'))
+bot.command('time', (ctx) => ctx.reply(new Date().toTimeString()))
 
 bot.command('photo', ({ replyWithPhoto }) => {
     const randomPhotoURL = 'https://picsum.photos/200/300/?random'
@@ -49,15 +54,14 @@ bot.command('dog', async ctx => {
     }
 })
 
-bot.command('fortune', ctx => {
-    axios.get("http://yerkee.com/api/fortune")
-        .then(function (response) {
-            ctx.reply(response.data.fortune)
-        })
-        .catch(function (error) {
-            ctx.reply("Your future is not clear to me (error)");
-            console.error("When fetching or processing fortune: ", error);
-        })
+bot.command('fortune', async ctx => {
+    try {
+        const response = await axios.get("http://yerkee.com/api/fortune")
+        ctx.reply(response.data.fortune)
+    } catch (error) {
+        ctx.reply("Your future is not clear to me (error)");
+        console.error("When fetching or processing fortune: ", error);
+    }
 })
 
 
