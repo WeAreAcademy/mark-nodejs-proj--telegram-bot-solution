@@ -17,11 +17,6 @@ bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.command('go', (ctx) => ctx.reply('I got the command /go !'))
 bot.command('time', (ctx) => ctx.reply(new Date().toTimeString()))
 
-bot.command('photo', ({ replyWithPhoto }) => {
-    const randomPhotoURL = 'https://picsum.photos/200/300/?random'
-    replyWithPhoto({ url: randomPhotoURL })
-})
-
 bot.command('dog', async ctx => {
     //1. get the breed from the command text
     const parts = ctx.message.text.split(" ");
@@ -54,6 +49,19 @@ bot.command('dog', async ctx => {
     }
 })
 
+
+bot.command('joke', async ctx => {
+    try {
+        const response = await axios.get("https://icanhazdadjoke.com/", {
+            headers: { 'Accept': 'application/json' }
+        })
+        console.log(response.data)
+        ctx.reply(response.data.joke)
+    } catch (error) {
+        ctx.reply("Hmm, I can't seem to think of any, sorry. (error)");
+        console.error("When fetching or processing joke: ", error);
+    }
+})
 bot.command('fortune', async ctx => {
     try {
         const response = await axios.get("http://yerkee.com/api/fortune")
@@ -62,6 +70,20 @@ bot.command('fortune', async ctx => {
         ctx.reply("Your future is not clear to me (error)");
         console.error("When fetching or processing fortune: ", error);
     }
+})
+
+
+//The function used by this command is broken
+bot.command('photo', (ctx) => {
+    const randomPhotoURL = 'https://picsum.photos/200/300/?random'
+    ctx.replyWithPhoto({ url: randomPhotoURL })
+})
+
+//The function used by this command is broken
+bot.command('debug', (ctx) => {
+    console.log(ctx.message);
+    console.log(ctx.message.from.first_name);
+    ctx.reply("You sent: " + ctx.message.text);
 })
 
 
