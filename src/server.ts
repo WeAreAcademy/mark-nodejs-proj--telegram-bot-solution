@@ -84,7 +84,11 @@ bot.command("photo", (ctx) => {
 bot.command("debug", (ctx) => {
     console.log(ctx.message);
     console.log(ctx.message.from.first_name);
-    ctx.reply("You sent: " + ctx.message.text);
+    ctx.reply(
+        "You sent: " +
+            ctx.message.text +
+            " - check server console for full message details"
+    );
 });
 
 bot.launch();
