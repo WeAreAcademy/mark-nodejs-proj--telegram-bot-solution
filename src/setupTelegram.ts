@@ -1,23 +1,31 @@
+import fs from "fs";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import axios from "axios";
 import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
 import { extractDiceNotationFromCommandText } from "./diceHelp";
 import { addMessage, getMessages } from "./store";
+import { downloadVoiceFileFromTelegram } from "./fileHelp";
 
 export function setupTelegram() {
     dotenv.config();
+    const botToken = process.env.BOT_TOKEN;
 
-    if (!process.env.BOT_TOKEN) {
+    if (!botToken) {
         console.error(
             "No BOT_TOKEN env var!  Get one from BotFather and save it in .env file.",
         );
         process.exit(1);
     }
-    const bot = new Telegraf(process.env.BOT_TOKEN);
+    const bot = new Telegraf(botToken);
 
     //OPTIONAL: logs incoming messages but it's quite noisy
-    bot.use(Telegraf.log());
+    bot.use(
+        Telegraf.log((s: string) => {
+            addMessage(s);
+            console.debug(s);
+        }),
+    );
 
     bot.start((ctx) => ctx.reply("Welcome"));
     bot.help((ctx) => ctx.reply("Send me a sticker"));
@@ -28,6 +36,7 @@ export function setupTelegram() {
         addMessage(ctx.message.text);
         ctx.reply("I stored your message");
     });
+
     bot.command("time", (ctx) => ctx.reply(new Date().toTimeString()));
     bot.command("sing", (ctx) => {
         ctx.reply("I don't sing (telegram-bot-solution-ts)");
@@ -119,6 +128,20 @@ export function setupTelegram() {
         ctx.replyWithPhoto({ url: randomPhotoURL });
     });
 
+    bot.on("voice", async (ctx) => {
+        try {
+            let fileId = ctx.message.voice.file_id;
+
+            await downloadVoiceFileFromTelegram(
+                { ctx, fileId },
+                botToken,
+                () => ctx.reply("File downloaded successfully"),
+                (error) => ctx.reply(`Error: ${error.message}`),
+            );
+        } catch (error: any) {
+            ctx.reply(`An error occurred: ${error.message}`);
+        }
+    });
     //The function used by this command is broken
     bot.command("debug", (ctx) => {
         console.log(ctx.message);
