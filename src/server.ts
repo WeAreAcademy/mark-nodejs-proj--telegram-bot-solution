@@ -2,8 +2,8 @@ import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import axios from "axios";
 import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
-import { extractDiceNotationFromCommandText } from "./diceHelp";
-import { downloadVoiceFileFromTelegram } from "./fileHelp";
+import { extractDiceNotationFromCommandText } from "./support/diceHelp";
+import { downloadVoiceFileFromTelegram } from "./support/fileHelp";
 
 dotenv.config();
 const botToken = process.env.BOT_TOKEN;
