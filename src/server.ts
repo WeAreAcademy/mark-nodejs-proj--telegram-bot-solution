@@ -27,6 +27,11 @@ bot.command("dice", (ctx) => {
     ctx.replyWithDice();
 });
 
+bot.command("photo", (ctx) => {
+    const randomPhotoURL = "https://picsum.photos/200/300/?random";
+    ctx.replyWithPhoto({ url: randomPhotoURL });
+});
+
 bot.command("gif", (ctx) => {
     ctx.replyWithAnimation("https://tenor.com/H1iF.gif");
 });
@@ -95,12 +100,6 @@ bot.command("fortune", async (ctx) => {
         ctx.reply("Your future is not clear to me (error)");
         console.error("When fetching or processing fortune: ", error);
     }
-});
-
-//The function used by this command is broken
-bot.command("photo", (ctx) => {
-    const randomPhotoURL = "https://picsum.photos/200/300/?random";
-    ctx.replyWithPhoto({ url: randomPhotoURL });
 });
 
 bot.on("voice", async (ctx) => {
