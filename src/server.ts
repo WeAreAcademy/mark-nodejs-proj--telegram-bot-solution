@@ -12,6 +12,9 @@ if (!process.env.BOT_TOKEN) {
 }
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
+//OPTIONAL: logs incoming messages but it's quite noisy
+// bot.use(Telegraf.log());
+
 bot.start((ctx) => ctx.reply("Welcome"));
 bot.help((ctx) => ctx.reply("Send me a sticker"));
 bot.on("sticker", (ctx) => ctx.reply("👍"));
