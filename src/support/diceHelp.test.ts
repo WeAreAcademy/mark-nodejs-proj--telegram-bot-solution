@@ -1,5 +1,5 @@
 import { assert, it } from "vitest";
-import { extractDiceNotationFromCommandText } from "./diceHelp";
+import { extractDiceNotationFromCommandText } from "../support/diceHelp";
 
 //run these tests at prompt with npx vitest - no need to install anything.
 

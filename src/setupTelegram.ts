@@ -1,9 +1,9 @@
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import axios from "axios";
 import { Telegraf } from "telegraf";
-import { extractDiceNotationFromCommandText } from "./diceHelp";
-import { getBotTokenFromEnvironmentVariableOrFail } from "./envVarHelp";
-import { downloadVoiceFileFromTelegram } from "./fileHelp";
+import { extractDiceNotationFromCommandText } from "./support/diceHelp";
+import { getBotTokenFromEnvironmentVariableOrFail } from "./support/envVarHelp";
+import { downloadVoiceFileFromTelegram } from "./support/fileHelp";
 import { addMessage, getMessages } from "./store";
 
 export function setupTelegram() {
