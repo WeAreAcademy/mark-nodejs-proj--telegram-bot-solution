@@ -22,18 +22,18 @@ bot.on("sticker", (ctx) => ctx.reply("👍"));
 bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 bot.command("go", (ctx) => ctx.reply("I got the command /go !"));
 bot.command("time", (ctx) => ctx.reply(new Date().toTimeString()));
+bot.command("sing", (ctx) => {
+    ctx.reply("I don't sing (telegram-bot-solution-ts)");
+});
+
+//see later for a more complex dice-rolling solution: /roll
+bot.command("/dice", (ctx) => {
+    ctx.replyWithDice();
+});
 
 bot.command("/gif", (ctx) => {
     ctx.replyWithAnimation("https://tenor.com/H1iF.gif");
 });
-
-function getTextAfterFirstSpace(txt: string) {
-    const firstSpace = txt.indexOf(" ");
-    if (firstSpace === -1) {
-        return null;
-    }
-    return txt.slice(firstSpace + 1);
-}
 
 //accepts "/roll" for a default
 //accepts custom dice-rolls like "/roll 2620 + 1d4"
@@ -44,12 +44,25 @@ bot.command("/roll", (ctx) => {
     ctx.reply(roll.toString());
 });
 
-bot.command("/dice", (ctx) => {
-    ctx.replyWithDice();
-});
+function getTextAfterFirstSpace(txt: string) {
+    const firstSpace = txt.indexOf(" ");
+    if (firstSpace === -1) {
+        return null;
+    }
+    return txt.slice(firstSpace + 1);
+}
 
-bot.command("sing", (ctx) => {
-    ctx.reply("I don't sing (telegram-bot-solution-ts)");
+bot.command("joke", async (ctx) => {
+    try {
+        const response = await axios.get("https://icanhazdadjoke.com/", {
+            headers: { Accept: "application/json" },
+        });
+        console.log(response.data);
+        ctx.reply(response.data.joke);
+    } catch (error) {
+        ctx.reply("Hmm, I can't seem to think of any, sorry. (error)");
+        console.error("When fetching or processing joke: ", error);
+    }
 });
 
 //message: "/dog spaniel"
@@ -86,18 +99,6 @@ bot.command("dog", async (ctx) => {
     }
 });
 
-bot.command("joke", async (ctx) => {
-    try {
-        const response = await axios.get("https://icanhazdadjoke.com/", {
-            headers: { Accept: "application/json" },
-        });
-        console.log(response.data);
-        ctx.reply(response.data.joke);
-    } catch (error) {
-        ctx.reply("Hmm, I can't seem to think of any, sorry. (error)");
-        console.error("When fetching or processing joke: ", error);
-    }
-});
 bot.command("fortune", async (ctx) => {
     try {
         const response = await axios.get("http://yerkee.com/api/fortune");
