@@ -20,10 +20,20 @@ bot.on("sticker", (ctx) => ctx.reply("👍"));
 bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 bot.command("go", (ctx) => ctx.reply("I got the command /go !"));
 bot.command("time", (ctx) => ctx.reply(new Date().toTimeString()));
-bot.command("sing", (ctx) =>
-    ctx.reply("I don't sing (telegram-bot-solution-ts)"),
-);
 
+bot.command("/gif", (ctx) => {
+    ctx.replyWithAnimation("https://tenor.com/H1iF.gif");
+});
+
+bot.command("/dice", (ctx) => {
+    ctx.replyWithDice();
+});
+
+bot.command("sing", (ctx) => {
+    ctx.reply("I don't sing (telegram-bot-solution-ts)");
+});
+
+//message: "/dog spaniel"
 bot.command("dog", async (ctx) => {
     //1. get the breed from the command text
     const parts = ctx.message.text.split(" ");
