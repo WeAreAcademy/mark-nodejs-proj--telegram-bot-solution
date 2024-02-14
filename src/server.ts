@@ -3,16 +3,18 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
 import { extractDiceNotationFromCommandText } from "./diceHelp";
+import { downloadVoiceFileFromTelegram } from "./fileHelp";
 
 dotenv.config();
+const botToken = process.env.BOT_TOKEN;
 
-if (!process.env.BOT_TOKEN) {
+if (!botToken) {
     console.error(
         "No BOT_TOKEN env var!  Get one from BotFather and save it in .env file.",
     );
     process.exit(1);
 }
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(botToken);
 
 //OPTIONAL: logs incoming messages but it's quite noisy
 bot.use(Telegraf.log());
@@ -106,6 +108,21 @@ bot.command("fortune", async (ctx) => {
 bot.command("photo", (ctx) => {
     const randomPhotoURL = "https://picsum.photos/200/300/?random";
     ctx.replyWithPhoto({ url: randomPhotoURL });
+});
+
+bot.on("voice", async (ctx) => {
+    try {
+        let fileId = ctx.message.voice.file_id;
+
+        await downloadVoiceFileFromTelegram(
+            { ctx, fileId },
+            botToken,
+            () => ctx.reply("File downloaded successfully"),
+            (error) => ctx.reply(`Error: ${error.message}`),
+        );
+    } catch (error: any) {
+        ctx.reply(`An error occurred: ${error.message}`);
+    }
 });
 
 //The function used by this command is broken
