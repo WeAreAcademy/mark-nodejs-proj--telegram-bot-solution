@@ -1,7 +1,8 @@
+import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import axios from "axios";
 import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
-import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+import { extractDiceNotationFromCommandText } from "./diceHelp";
 
 dotenv.config();
 
@@ -38,19 +39,15 @@ bot.command("/gif", (ctx) => {
 //accepts "/roll" for a default
 //accepts custom dice-rolls like "/roll 2620 + 1d4"
 bot.command("/roll", (ctx) => {
-    //ctx.message.text could be "/roll" or "/roll 3d20 + 1d4 - 2d6 + 3"
-    let diceNotation = getTextAfterFirstSpace(ctx.message.text) ?? "2d6";
+    //ctx.message.text could be "/roll"
+    //may also get: /roll 3d20 + 1d4 - 2d6 + 3
+    //may also get: /roll@neill_bot 2d12 + 4d6 + 2
+    //may also get: /roll 3d20+4d6@neill_bot
+    const diceNotation =
+        extractDiceNotationFromCommandText(ctx.message.text) ?? "2d6";
     let roll = new DiceRoll(diceNotation);
     ctx.reply(roll.toString());
 });
-
-function getTextAfterFirstSpace(txt: string) {
-    const firstSpace = txt.indexOf(" ");
-    if (firstSpace === -1) {
-        return null;
-    }
-    return txt.slice(firstSpace + 1);
-}
 
 bot.command("joke", async (ctx) => {
     try {
