@@ -6,7 +6,7 @@ dotenv.config();
 
 if (!process.env.BOT_TOKEN) {
     console.error(
-        "No BOT_TOKEN env var!  Get one from BotFather and save it in .env file."
+        "No BOT_TOKEN env var!  Get one from BotFather and save it in .env file.",
     );
     process.exit(1);
 }
@@ -90,7 +90,7 @@ bot.command("debug", (ctx) => {
     ctx.reply(
         "You sent: " +
             ctx.message.text +
-            " - check server console for full message details"
+            " - check server console for full message details",
     );
 });
 
