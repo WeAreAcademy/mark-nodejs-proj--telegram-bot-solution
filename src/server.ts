@@ -1,6 +1,8 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
+import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+
 dotenv.config();
 
 if (!process.env.BOT_TOKEN) {
@@ -23,6 +25,23 @@ bot.command("time", (ctx) => ctx.reply(new Date().toTimeString()));
 
 bot.command("/gif", (ctx) => {
     ctx.replyWithAnimation("https://tenor.com/H1iF.gif");
+});
+
+function getTextAfterFirstSpace(txt: string) {
+    const firstSpace = txt.indexOf(" ");
+    if (firstSpace === -1) {
+        return null;
+    }
+    return txt.slice(firstSpace + 1);
+}
+
+//accepts "/roll" for a default
+//accepts custom dice-rolls like "/roll 2620 + 1d4"
+bot.command("/roll", (ctx) => {
+    //ctx.message.text could be "/roll" or "/roll 3d20 + 1d4 - 2d6 + 3"
+    let diceNotation = getTextAfterFirstSpace(ctx.message.text) ?? "2d6";
+    let roll = new DiceRoll(diceNotation);
+    ctx.reply(roll.toString());
 });
 
 bot.command("/dice", (ctx) => {
