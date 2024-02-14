@@ -12,7 +12,7 @@ if (!process.env.BOT_TOKEN) {
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 //OPTIONAL: logs incoming messages but it's quite noisy
-// bot.use(Telegraf.log());
+bot.use(Telegraf.log());
 
 bot.start((ctx) => ctx.reply("Welcome"));
 bot.help((ctx) => ctx.reply("Send me a sticker"));
@@ -20,6 +20,9 @@ bot.on("sticker", (ctx) => ctx.reply("👍"));
 bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 bot.command("go", (ctx) => ctx.reply("I got the command /go !"));
 bot.command("time", (ctx) => ctx.reply(new Date().toTimeString()));
+bot.command("sing", (ctx) =>
+    ctx.reply("I don't sing (telegram-bot-solution-ts)"),
+);
 
 bot.command("dog", async (ctx) => {
     //1. get the breed from the command text
