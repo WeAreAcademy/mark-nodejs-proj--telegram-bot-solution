@@ -4,7 +4,7 @@ export function extractDiceNotationFromCommandText(commandText: string) {
         return null;
     }
     //remove any optional bot name from the end of the text.
-    return afterSpace.split("@")[0];
+    return afterSpace.split("@")[0].trim();
 }
 /**
  * @example "/roll   2d6" -> "2d6"

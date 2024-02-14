@@ -28,16 +28,16 @@ bot.command("sing", (ctx) => {
 });
 
 //see later for a more complex dice-rolling solution: /roll
-bot.command("/dice", (ctx) => {
+bot.command("dice", (ctx) => {
     ctx.replyWithDice();
 });
 
-bot.command("/gif", (ctx) => {
+bot.command("gif", (ctx) => {
     ctx.replyWithAnimation("https://tenor.com/H1iF.gif");
 });
 
 //accepts "/roll" for a default, or custom, like "/roll 2620 + 1d4"
-bot.command("/roll", (ctx) => {
+bot.command("roll", (ctx) => {
     const diceNotation =
         extractDiceNotationFromCommandText(ctx.message.text) ?? "2d6";
     //https://dice-roller.github.io/documentation/guide/usage.html#rolling-dice

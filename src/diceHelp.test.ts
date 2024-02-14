@@ -39,4 +39,8 @@ it("with /roll <dice-notation-here>@botname", () => {
         extractDiceNotationFromCommandText("/roll 2d12 + 4d6 + 2@neill_bot"),
         "2d12 + 4d6 + 2",
     );
+    assert.strictEqual(
+        extractDiceNotationFromCommandText("/roll 10d12 + 8 + 2 @neill_bot"),
+        "10d12 + 8 + 2",
+    );
 });
