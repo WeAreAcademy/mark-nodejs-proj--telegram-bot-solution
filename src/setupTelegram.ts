@@ -1,22 +1,14 @@
-import fs from "fs";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import axios from "axios";
-import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
 import { extractDiceNotationFromCommandText } from "./diceHelp";
-import { addMessage, getMessages } from "./store";
+import { getBotTokenFromEnvironmentVariableOrFail } from "./envVarHelp";
 import { downloadVoiceFileFromTelegram } from "./fileHelp";
+import { addMessage, getMessages } from "./store";
 
 export function setupTelegram() {
-    dotenv.config();
-    const botToken = process.env.BOT_TOKEN;
+    const botToken = getBotTokenFromEnvironmentVariableOrFail();
 
-    if (!botToken) {
-        console.error(
-            "No BOT_TOKEN env var!  Get one from BotFather and save it in .env file.",
-        );
-        process.exit(1);
-    }
     const bot = new Telegraf(botToken);
 
     //OPTIONAL: logs incoming messages but it's quite noisy
