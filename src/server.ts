@@ -67,7 +67,7 @@ bot.command("dog", async (ctx) => {
     }
     const breed = parts[1];
 
-    2; //fetch a random image URL for this breed, from the dog API
+    //2. fetch a random image URL for this breed, from the dog API
     const url = `https://dog.ceo/api/breed/${breed}/images/random`;
 
     try {
