@@ -1,7 +1,6 @@
-import { Telegraf, session } from "telegraf";
-import { pickRandom } from "./random";
 import axios from "axios";
 import dotenv from "dotenv";
+import { Telegraf } from "telegraf";
 dotenv.config();
 
 if (!process.env.BOT_TOKEN) {
