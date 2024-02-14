@@ -22,7 +22,11 @@ export function setupTelegram() {
     //OPTIONAL: logs incoming messages but it's quite noisy
     bot.use(
         Telegraf.log((s: string) => {
-            addMessage(s);
+            //WARNING:SECURITY RISK.
+            //Allowing messages to be stored and served by express is a security risk:
+            //The bot token can show up in those messages.  Even logging messages to console is a risk.
+            //That's before considering the privacy implications.
+            // addMessage(s);
             console.debug(s);
         }),
     );
