@@ -36,15 +36,11 @@ bot.command("/gif", (ctx) => {
     ctx.replyWithAnimation("https://tenor.com/H1iF.gif");
 });
 
-//accepts "/roll" for a default
-//accepts custom dice-rolls like "/roll 2620 + 1d4"
+//accepts "/roll" for a default, or custom, like "/roll 2620 + 1d4"
 bot.command("/roll", (ctx) => {
-    //ctx.message.text could be "/roll"
-    //may also get: /roll 3d20 + 1d4 - 2d6 + 3
-    //may also get: /roll@neill_bot 2d12 + 4d6 + 2
-    //may also get: /roll 3d20+4d6@neill_bot
     const diceNotation =
         extractDiceNotationFromCommandText(ctx.message.text) ?? "2d6";
+    //https://dice-roller.github.io/documentation/guide/usage.html#rolling-dice
     let roll = new DiceRoll(diceNotation);
     ctx.reply(roll.toString());
 });
